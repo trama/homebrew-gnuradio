@@ -3,6 +3,10 @@
 This is a collection of [Homebrew](https://github.com/mxcl/homebrew) recipes
 that makes it easier get GNU Radio and friends running on OS X.
 
+## Note - Warning
+
+[These formula](https://github.com/xlfe/homebrew-gnuradio) are a work in progress and many are _not currently working_ and have not been tested (much or at all)
+
 ## Installation
 
 These steps have been tested on Lion 10.7.4 with Xcode 4.3.2 and Mountain Lion
