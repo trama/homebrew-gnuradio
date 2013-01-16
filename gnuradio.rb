@@ -2,8 +2,8 @@ require 'formula'
 
 class Gnuradio < Formula
   homepage 'http://gnuradio.org'
-  url  'http://gnuradio.org/releases/gnuradio/gnuradio-3.6.2.tar.gz'
-  sha1 'c2b987fd9a33c02a9c0b6ef75f44b31f0fffbe9a'
+  url  'http://gnuradio.org/releases/gnuradio/gnuradio-3.6.3rc0.tar.gz'
+  sha1 '89bbbb880534e162e97abf2448c66abc4efe2af1'
   head 'git://gnuradio.org/gnuradio.git'
 
   depends_on 'cmake' => :build
@@ -34,7 +34,7 @@ class Gnuradio < Formula
   def options
     [
       ['--with-qt', 'Build gr-qtgui.'],
-      ['--with-docs', 'Build docs.']
+      ['--with-docs', 'Build docs.'],
     ]
   end
 
