@@ -9,6 +9,7 @@ class EttusUhd < Formula
   sha1 ''
 
   depends_on 'cmake' => :build
+  depends_on 'boost'
 
   def install
     cd "host"

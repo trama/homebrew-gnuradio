@@ -8,6 +8,11 @@ class Op25 < Formula
   head 'http://op25.osmocom.org/svn/trunk', :using => :svn
   sha1 ''
 
+  depends_on 'fftw'
+  depends_on 'libusb'
+  depends_on 'itpp'
+  depends_on 'ettus-uhd'
+
   env :userpaths
 
   fails_with :clang do

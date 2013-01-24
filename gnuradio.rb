@@ -2,8 +2,8 @@ require 'formula'
 
 class Gnuradio < Formula
   homepage 'http://gnuradio.org'
-  url  'http://gnuradio.org/releases/gnuradio/gnuradio-3.6.3rc0.tar.gz'
-  sha1 '89bbbb880534e162e97abf2448c66abc4efe2af1'
+  url  'http://gnuradio.org/releases/gnuradio/gnuradio-3.6.3.tar.gz'
+  sha1 '27c4edcc641167ba33202a7e5072e8c98891c353'
   head 'git://gnuradio.org/gnuradio.git'
 
   depends_on 'cmake' => :build
@@ -13,6 +13,8 @@ class Gnuradio < Formula
   depends_on 'scipy' => :python
   depends_on 'matplotlib' => :python
   depends_on 'python'
+  depends_on 'gfortran'
+  depends_on 'umfpack'
   depends_on 'boost'
   depends_on 'cppunit'
   depends_on 'gsl'
@@ -22,7 +24,9 @@ class Gnuradio < Formula
   depends_on 'sdl'
   depends_on 'libusb'
   depends_on 'orc'
+  depends_on 'ettus-uhd'
   depends_on 'pyqt' if ARGV.include?('--with-qt')
+  depends_on 'qwt' if ARGV.include?('--with-qt')
   depends_on 'pyqwt' if ARGV.include?('--with-qt')
   depends_on 'doxygen' if ARGV.include?('--with-docs')
 
@@ -44,7 +48,8 @@ class Gnuradio < Formula
 
   def install
     mkdir 'build' do
-      args = ["-DCMAKE_PREFIX_PATH=#{prefix}", "-DQWT_INCLUDE_DIRS=#{HOMEBREW_PREFIX}/lib/qwt.framework/Headers"] + std_cmake_args
+      args = ["-DCMAKE_PREFIX_PATH=#{prefix}", "-DQWT_INCLUDE_DIRS=#{HOMEBREW_PREFIX}/lib/qwt.framework/Headers",
+      "-DQWT_LIBRARIES=#{HOMEBREW_PREFIX}/lib/qwt.framework/qwt", ] + std_cmake_args
       args << '-DENABLE_GR_QTGUI=OFF' unless ARGV.include?('--with-qt')
       args << '-DENABLE_DOXYGEN=OFF' unless ARGV.include?('--with-docs')
       args << "-DPYTHON_LIBRARY=#{python_path}/Frameworks/Python.framework/"
@@ -72,19 +77,6 @@ class Gnuradio < Formula
 end
 
 __END__
-diff --git a/grc/CMakeLists.txt b/grc/CMakeLists.txt
-index f54aa4f..db0ce3c 100644
---- a/grc/CMakeLists.txt
-+++ b/grc/CMakeLists.txt
-@@ -25,7 +25,7 @@ include(GrPython)
- GR_PYTHON_CHECK_MODULE("python >= 2.5"     sys          "sys.version.split()[0] >= '2.5'"           PYTHON_MIN_VER_FOUND)
- GR_PYTHON_CHECK_MODULE("Cheetah >= 2.0.0"  Cheetah      "Cheetah.Version >= '2.0.0'"                CHEETAH_FOUND)
- GR_PYTHON_CHECK_MODULE("lxml >= 1.3.6"     lxml.etree   "lxml.etree.LXML_VERSION >= (1, 3, 6, 0)"   LXML_FOUND)
--GR_PYTHON_CHECK_MODULE("pygtk >= 2.10.0"   gtk          "gtk.pygtk_version >= (2, 10, 0)"           PYGTK_FOUND)
-+GR_PYTHON_CHECK_MODULE("pygtk >= 2.10.0"   pygtk        True                                        PYGTK_FOUND)
- GR_PYTHON_CHECK_MODULE("numpy"             numpy        True                                        NUMPY_FOUND)
- 
- ########################################################################
 diff --git a/gr-qtgui/lib/spectrumdisplayform.ui b/gr-qtgui/lib/spectrumdisplayform.ui
 index 049d4ff..a40502b 100644
 --- a/gr-qtgui/lib/spectrumdisplayform.ui
@@ -97,3 +89,17 @@ index 049d4ff..a40502b 100644
   <customwidgets>
    <customwidget>
     <class>QwtWheel</class>
+diff --git a/gr-qtgui/swig/CMakeLists.txt b/gr-qtgui/swig/CMakeLists.txt
+index a1f7024..53bfe18 100644
+--- a/gr-qtgui/swig/CMakeLists.txt
++++ b/gr-qtgui/swig/CMakeLists.txt
+@@ -37,6 +37,8 @@ set(GR_SWIG_DOC_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../include)
+ 
+ set(GR_SWIG_LIBRARIES gnuradio-qtgui)
+ 
++target_link_libraries(swig ${qtgui_libs})
++
+ GR_SWIG_MAKE(qtgui_swig qtgui_swig.i)
+ 
+ GR_SWIG_INSTALL(
+
