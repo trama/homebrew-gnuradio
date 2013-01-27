@@ -82,7 +82,7 @@ These steps have been tested under the following environment:
   local_blocks_path=/usr/local/share/gnuradio/grc/blocks
   ```
 
-- Install `rtlsdr` `gr-bax` and optionally `op25` and `gqrx`
+- Install `rtlsdr` `gr-baz` and optionally `op25` and `gqrx`
 
   ```sh
   brew install --HEAD rtlsdr gr-osmosdr gr-baz 
