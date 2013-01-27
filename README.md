@@ -11,7 +11,7 @@ that makes it easier get GNU Radio and friends running on OS X.
 
 These steps have been tested under the following environment:
 
-	```HOMEBREW_VERSION: 0.9.3
+	HOMEBREW_VERSION: 0.9.3
 	ORIGIN: https://github.com/mxcl/homebrew
 	HEAD: f8e58e1153680e3a03839b726b50c8ec7d176649
 	HOMEBREW_PREFIX: /usr/local
@@ -28,7 +28,7 @@ These steps have been tested under the following environment:
 	Perl: /usr/bin/perl
 	Python: /usr/bin/python
 	Ruby: /usr/bin/ruby => /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby
-	```
+	
 ## Installation
 
 - Add this line to your profile (ie `~/.bash_profile` or `~/.zshenv`) and reload
@@ -58,12 +58,11 @@ These steps have been tested under the following environment:
   pip install numpy Cheetah lxml
   ```
 
-- Install older version of automake (otherwise ettus-uhd won't build) and ettus-uhd
+- Install ettus-uhd
 
   ```sh
   brew tap xlfe/homebrew-gnuradio
-  brew install xlfe/gnuradio/automake
-  brew install --HEAD --use-gcc ettus-uhd 
+  brew install ettus-uhd 
   ```
 
 - Before installing `gnuradio`, install `wxmac` 2.9 with python bindings
@@ -72,16 +71,10 @@ These steps have been tested under the following environment:
   brew install wxmac --python
   ```
 
-- Link in the qwt and Qt framekworks
-  ```sh
-  ln -s /usr/local/lib/qwt* /usr/local/Cellar/python/2.7.3/Frameworks/
-  ln -s /usr/local/lib/Qt* /usr/local/Cellar/python/2.7.3/Frameworks/
-  ```
-
-- Install gnuradio (add `--with-qt` for `gr-qtgui`)
+- Install gnuradio (`--with-qt`)
 
   ```sh
-  brew install --with-qt --use-gcc gnuradio
+  brew install --with-qt gnuradio
   ```
 - Create the `~/.gnuradio/config.conf` config file for custom block support
 

@@ -48,8 +48,7 @@ class Gnuradio < Formula
 
   def install
     mkdir 'build' do
-      args = ["-DCMAKE_PREFIX_PATH=#{prefix}", "-DQWT_INCLUDE_DIRS=#{HOMEBREW_PREFIX}/lib/qwt.framework/Headers",
-      "-DQWT_LIBRARIES=#{HOMEBREW_PREFIX}/lib/qwt.framework/qwt", ] + std_cmake_args
+      args = ["-DCMAKE_PREFIX_PATH=#{prefix}", "-DQWT_INCLUDE_DIRS=#{HOMEBREW_PREFIX}/lib/qwt.framework/Headers","-DQWT_LIBRARY_DIRS=#{HOMEBREW_PREFIX}/lib/"] + std_cmake_args
       args << '-DENABLE_GR_QTGUI=OFF' unless ARGV.include?('--with-qt')
       args << '-DENABLE_DOXYGEN=OFF' unless ARGV.include?('--with-docs')
       args << "-DPYTHON_LIBRARY=#{python_path}/Frameworks/Python.framework/"
@@ -89,17 +88,3 @@ index 049d4ff..a40502b 100644
   <customwidgets>
    <customwidget>
     <class>QwtWheel</class>
-diff --git a/gr-qtgui/swig/CMakeLists.txt b/gr-qtgui/swig/CMakeLists.txt
-index a1f7024..53bfe18 100644
---- a/gr-qtgui/swig/CMakeLists.txt
-+++ b/gr-qtgui/swig/CMakeLists.txt
-@@ -37,6 +37,8 @@ set(GR_SWIG_DOC_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../include)
- 
- set(GR_SWIG_LIBRARIES gnuradio-qtgui)
- 
-+target_link_libraries(swig ${qtgui_libs})
-+
- GR_SWIG_MAKE(qtgui_swig qtgui_swig.i)
- 
- GR_SWIG_INSTALL(
-
