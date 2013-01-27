@@ -8,6 +8,7 @@ class Op25 < Formula
   head 'http://op25.osmocom.org/svn/trunk', :using => :svn
   sha1 ''
 
+  depends_on 'automake' => :build
   depends_on 'fftw'
   depends_on 'libusb'
   depends_on 'itpp'
@@ -16,6 +17,10 @@ class Op25 < Formula
   env :userpaths
 
   fails_with :clang do
+    build 421
+    cause <<-EOS.undent
+    	Too many errors...
+    EOS
   end
 
   # depends_on 'cmake' => :build
@@ -69,17 +74,16 @@ index f9c7f21..126b54b 100644
  
  # Don't assume that make predefines $(RM), because BSD make does
  # not. We define it now in configure.ac using AM_PATH_PROG, but now
-diff --git a/blocks/config/lf_warnings.m4 b/blocks/config/lf_warnings.m4
-index 4e2ca91..8bc2c2c 100644
---- a/blocks/config/lf_warnings.m4
-+++ b/blocks/config/lf_warnings.m4
-@@ -112,7 +112,7 @@ AC_DEFUN([LF_SET_WARNINGS],[
-   AC_MSG_RESULT($lf_warnings)
-   
-   dnl Warnings for the two main compilers
--  cc_warning_flags="-Wall"
-+  cc_warning_flags="-Wall -ferror-limit=0"
-   cxx_warning_flags="-Wall -Woverloaded-virtual"
-   if test $lf_warnings = yes
-   then
+diff --git a/blocks/configure.ac b/blocks/configure.ac
+index a8d25de..495de23 100644
+--- a/blocks/configure.ac
++++ b/blocks/configure.ac
+@@ -22,7 +22,7 @@ dnl
+ AC_INIT
+ AC_PREREQ(2.57)
+ AC_CONFIG_SRCDIR([src/lib/op25.i])
+-AM_CONFIG_HEADER(config.h)
++AC_CONFIG_HEADERS(config.h)
+ AC_CANONICAL_TARGET([])
+ AM_INIT_AUTOMAKE(op25,0.0.1)
 

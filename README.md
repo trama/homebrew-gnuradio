@@ -58,11 +58,10 @@ These steps have been tested under the following environment:
   pip install numpy Cheetah lxml
   ```
 
-- Install ettus-uhd
+- Tap xlfe/homebrew-gnuradio
 
   ```sh
   brew tap xlfe/homebrew-gnuradio
-  brew install ettus-uhd 
   ```
 
 - Before installing `gnuradio`, install `wxmac` 2.9 with python bindings
@@ -83,14 +82,9 @@ These steps have been tested under the following environment:
   local_blocks_path=/usr/local/share/gnuradio/grc/blocks
   ```
 
-- Install `rtlsdr` and related blocks
+- Install `rtlsdr` `gr-bax` and optionally `op25` and `gqrx`
 
   ```sh
-  brew install rtlsdr gr-osmosdr gr-baz --HEAD
-  ```
-
-- Install `op25` and `gqrx`
-
-  ```sh
-  brew install --HEAD --use-gcc op25 gqrx
+  brew install --HEAD rtlsdr gr-osmosdr gr-baz 
+  brew install --HEAD op25 gqrx
   ```
