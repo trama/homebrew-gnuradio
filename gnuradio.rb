@@ -14,7 +14,7 @@ class Gnuradio < Formula
   depends_on 'matplotlib' => :python
   depends_on 'python'
   depends_on 'gfortran'
-  depends_on 'umfpack'
+  depends_on 'suite-sparse'
   depends_on 'boost'
   depends_on 'cppunit'
   depends_on 'gsl'
