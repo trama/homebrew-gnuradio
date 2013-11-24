@@ -18,6 +18,7 @@ class EttusUhd < Formula
     cd "build"
     system "cmake","../","-DCMAKE_INSTALL_PREFIX=#{prefix}",*std_cmake_args
     # system "cmake", ".", *std_cmake_args
+    system "make"
     system "make install" # if this fails, try separate make/make install steps
   end
 
