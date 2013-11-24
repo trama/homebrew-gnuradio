@@ -2,7 +2,7 @@ require 'formula'
 
 class Gnuradio < Formula
   homepage 'http://gnuradio.org'
-  url  'http://gnuradio.org/releases/gnuradio/gnuradio-3.6.5.1.tar.gz'
+  url  'http://gnuradio.org/releases/gnuradio/gnuradio-3.7.2.tar.gz'
   sha1 '8d3846dc1d00c60b74f06c0bb8f40d57ee257b5a'
   head 'http://gnuradio.org/git/gnuradio.git'
 
