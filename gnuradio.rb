@@ -39,9 +39,6 @@ class Gnuradio < Formula
     ]
   end
 
-  def patches
-    DATA
-  end
 
   def install
 
