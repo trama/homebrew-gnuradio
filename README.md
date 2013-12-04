@@ -54,21 +54,22 @@ Updates in the following days!
   brew install numpy scipy pixman
   brew install matplotlib --with-gtk --with-wx --with-pyqt 
   ```
-  If you have also installed python3, in my case I had also to install pip-2.7 and nose
+  If you have also installed python3, in my case I had also to install pip-2.7, nose and pyparsing.
   ```sh
   sudo easy_install-2.7 pip
   sudo pip-2.7 install nose
+  sudo pip-2.7 install pyparsing
   ```
 - Install the prerequisite python packages
 
   ```sh
-  pip install numpy Cheetah lxml
+  sudo pip-2.7 install numpy Cheetah lxml
   ```
 
-- Tap xlfe/homebrew-gnuradio
+- Tap trama/homebrew-gnuradio
 
   ```sh
-  brew tap xlfe/homebrew-gnuradio
+  brew tap trama/homebrew-gnuradio
   ```
 
 - Before installing `gnuradio`, install `wxmac` 2.9 with python bindings
