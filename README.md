@@ -45,12 +45,13 @@ Updates in the following days!
   ```sh
   brew install python gfortran swig
   ```
-  Package umfpack is not find in my home-brew installation
+  Package umfpack is now in suite-sparse, so see the following commands...
 
 - Tap samueljohn/homebrew-python for scipy (and numpy)
 
   ```sh
   brew tap samueljohn/homebrew-python
+  brew tap homebrew/science
   brew install numpy scipy pixman
   brew install matplotlib --with-gtk --with-wx --with-pyqt 
   ```
