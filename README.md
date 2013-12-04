@@ -5,30 +5,32 @@ that makes it easier get GNU Radio and friends running on OS X.
 
 ## Note - Warning
 
-[These formula](https://github.com/xlfe/homebrew-gnuradio) are a work in progress and so ymmv...
+[These formula](https://github.com/trama/homebrew-gnuradio) are a work in progress and so not yet stable.
+I have just forked them to test on a fresh Mavericks install!
+And I am trying to update to the last gnu radio 3.7 series...
+Hope this will work :)
 
 ## Tested on
 
-These steps have been tested under the following environment:
+I am testing under the following environment:
 
-	HOMEBREW_VERSION: 0.9.3
-	ORIGIN: https://github.com/mxcl/homebrew
-	HEAD: f8e58e1153680e3a03839b726b50c8ec7d176649
-	HOMEBREW_PREFIX: /usr/local
-	HOMEBREW_CELLAR: /usr/local/Cellar
-	CPU: quad-core 64-bit ivybridge
-	OS X: 10.8.2-x86_64
-	Xcode: 4.5.2
-	CLT: 4.5.0.0.1.1249367152
-	GCC-4.2: build 5666
-	LLVM-GCC: build 2336
-	Clang: 4.1 build 421
-	X11: 2.7.4 => /opt/X11
-	System Ruby: 1.8.7-358
-	Perl: /usr/bin/perl
-	Python: /usr/bin/python
-	Ruby: /usr/bin/ruby => /System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby
-	
+HOMEBREW_VERSION: 0.9.5
+ORIGIN: https://github.com/mxcl/homebrew
+HEAD: aee75f1898c0628523e41fdd665abadc647209d7
+HOMEBREW_PREFIX: /usr/local
+HOMEBREW_CELLAR: /usr/local/Cellar
+CPU: 8-core 64-bit haswell
+OS X: 10.9-x86_64
+CLT: 5.0.1.0.1.1382131676
+Clang: 5.0 build 500
+X11: 2.7.5 => /opt/X11
+System Ruby: 1.8.7-358
+Perl: /usr/bin/perl
+Python: /usr/bin/python
+Ruby: /usr/bin/ruby => /System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/bin/rub
+
+Updates in the following days!
+
 ## Installation
 
 - Add this line to your profile (ie `~/.bash_profile` or `~/.zshenv`) and reload
