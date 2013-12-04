@@ -40,11 +40,12 @@ Updates in the following days!
   export PATH=/usr/local/bin:/usr/local/share/python:$PATH
   ```
 
-- Install python and other important eependencies
+- Install python and other important dependencies
 
   ```sh
-  brew install python gfortran umfpack swig
+  brew install python gfortran swig
   ```
+  Package umfpack is not find in my home-brew installation
 
 - Tap samueljohn/homebrew-python for scipy (and numpy)
 
@@ -53,7 +54,11 @@ Updates in the following days!
   brew install numpy scipy pixman
   brew install matplotlib --with-gtk --with-wx --with-pyqt 
   ```
-
+  If you have also installed python3, in my case I had also to install pip-2.7 and nose
+  ```sh
+  sudo easy_install-2.7 pip
+  sudo pip-2.7 install nose
+  ```
 - Install the prerequisite python packages
 
   ```sh
