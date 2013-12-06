@@ -41,7 +41,7 @@ class Gnuradio < Formula
       ['--with-docs', 'Build docs.'],
     ]
   end
-
+  
   def patches
     DATA
   end
@@ -53,6 +53,7 @@ class Gnuradio < Formula
       args << '-DENABLE_GR_QTGUI=OFF' unless ARGV.include?('--with-qt')
       args << '-DENABLE_DOXYGEN=OFF' unless ARGV.include?('--with-docs')
       args << "-DPYTHON_LIBRARY=#{python_path}/Frameworks/Python.framework/"
+#      args << "-Wno-c++11-narrowing" #to avoid std-c++11 narrowing errors
       system 'cmake', '..', *args
       system 'make'
       system 'make install'
@@ -77,18 +78,6 @@ class Gnuradio < Formula
 end
 
 __END__
-diff --git a/gr-qtgui/lib/spectrumdisplayform.ui b/gr-qtgui/lib/spectrumdisplayform.ui
-index 049d4ff..a40502b 100644
---- a/gr-qtgui/lib/spectrumdisplayform.ui
-+++ b/gr-qtgui/lib/spectrumdisplayform.ui
-@@ -518,7 +518,6 @@
-   </layout>
-  </widget>
-  <layoutdefault spacing="6" margin="11"/>
-- <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
-  <customwidgets>
-   <customwidget>
-    <class>QwtWheel</class>
 diff --git a/gr-qtgui/swig/CMakeLists.txt b/gr-qtgui/swig/CMakeLists.txt
 index a1f7024..53bfe18 100644
 --- a/gr-qtgui/swig/CMakeLists.txt
@@ -102,4 +91,25 @@ index a1f7024..53bfe18 100644
  GR_SWIG_MAKE(qtgui_swig qtgui_swig.i)
  
  GR_SWIG_INSTALL(
+
+diff --git a/cmake/Modules/FindQwt.cmake b/cmake/Modules/FindQwt.cmake
+index d3dc7a5..3c417c7 100644
+--- a/cmake/Modules/FindQwt.cmake
++++ b/cmake/Modules/FindQwt.cmake
+@@ -39,7 +39,7 @@ if(QWT_INCLUDE_DIRS)
+     QWT_STRING_VERSION REGEX "QWT_VERSION_STR")
+   string(REGEX MATCH "[0-9]+.[0-9]+.[0-9]+" QWT_VERSION ${QWT_STRING_VERSION})
+   string(COMPARE LESS ${QWT_VERSION} "5.2.0" QWT_WRONG_VERSION)
+-  string(COMPARE GREATER ${QWT_VERSION} "6.0.2" QWT_WRONG_VERSION)
++  string(COMPARE GREATER ${QWT_VERSION} "6.1.2" QWT_WRONG_VERSION)
+ 
+   message(STATUS "QWT Version: ${QWT_VERSION}")
+   if(NOT QWT_WRONG_VERSION)
+@@ -56,4 +56,4 @@ if(QWT_FOUND)
+   include ( FindPackageHandleStandardArgs )
+   find_package_handle_standard_args( Qwt DEFAULT_MSG QWT_LIBRARIES QWT_INCLUDE_DIRS )
+   MARK_AS_ADVANCED(QWT_LIBRARIES QWT_INCLUDE_DIRS)
+-endif(QWT_FOUND)
+\ No newline at end of file
++endif(QWT_FOUND)
 
