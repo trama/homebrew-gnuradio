@@ -2,34 +2,37 @@ require 'formula'
 
 class Gnuradio < Formula
   homepage 'http://gnuradio.org'
-  url  'http://gnuradio.org/releases/gnuradio/gnuradio-3.7.2.1.tar.gz'
-  sha256 '8c6b7e1fda31e9228bdd62a137af901b28757d7e1b044de2e985b96e53c83c80'
+  url  'http://gnuradio.org/releases/gnuradio/gnuradio-3.7.3.tar.gz'
+  sha256 '1c71d1819a67bac4148c619fc2a7d2c0ea0b0d08aa4660a11d65ab7b713b5231'
   head 'git://gnuradio.org/gnuradio.git'
 
   depends_on 'cmake' => :build
-  depends_on 'Cheetah' => :python
-  depends_on 'lxml' => :python
-  depends_on 'numpy' => :python
-  depends_on 'scipy' => :python
-  depends_on 'matplotlib' => :python
   depends_on 'python'
-  depends_on 'gfortran'
-  depends_on 'suite-sparse'
   depends_on 'boost'
-  depends_on 'cppunit'
-  depends_on 'gsl'
   depends_on 'fftw'
-  depends_on 'swig'
+  depends_on 'gsl'
+  depends_on 'ice'
+  depends_on 'orc'
   depends_on 'pygtk'
   depends_on 'sdl'
-  depends_on 'libusb'
-  depends_on 'orc'
+  depends_on 'swig'
+  depends_on 'wxpython'
+  depends_on 'hicolor-icon-theme'
+  # depends_on 'gfortran'
+  # depends_on 'suite-sparse'
+  # depends_on 'cppunit'
+  # depends_on 'libusb'
   depends_on 'ettus-uhd'
   depends_on 'pyqt' if ARGV.include?('--with-qt')
   depends_on 'qwt' if ARGV.include?('--with-qt')
   depends_on 'pyqwt' if ARGV.include?('--with-qt')
   depends_on 'doxygen' if ARGV.include?('--with-docs')
-
+  depends_on 'Cheetah' => :python
+  depends_on 'lxml' => :python
+  # depends_on 'numpy' => :python
+  # depends_on 'scipy' => :python
+  # depends_on 'matplotlib' => :python
+  
   fails_with :clang do
     build 421
     cause "Fails to compile .S files."
@@ -47,24 +50,30 @@ class Gnuradio < Formula
   end
 
   def install
+    ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
+    install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
+    
     mkdir 'build' do
-      args = ["-DCMAKE_PREFIX_PATH=#{prefix}", "-DQWT_INCLUDE_DIRS=#{HOMEBREW_PREFIX}/lib/qwt.framework/Headers",
-      "-DQWT_LIBRARIES=#{HOMEBREW_PREFIX}/lib/qwt.framework/qwt", ] + std_cmake_args
+      #args = ["-DCMAKE_PREFIX_PATH=#{prefix}", "-DQWT_INCLUDE_DIRS=#{HOMEBREW_PREFIX}/lib/qwt.framework/Headers", "-DQWT_LIBRARIES=#{HOMEBREW_PREFIX}/lib/qwt.framework/qwt", ] + std_cmake_args
+      args = std_cmake_args
       args << '-DENABLE_GR_QTGUI=OFF' unless ARGV.include?('--with-qt')
       args << '-DENABLE_DOXYGEN=OFF' unless ARGV.include?('--with-docs')
-      args << "-DPYTHON_LIBRARY=#{python_path}/Frameworks/Python.framework/"
-#      args << "-Wno-c++11-narrowing" #to avoid std-c++11 narrowing errors
+      # args << "-DPYTHON_LIBRARY=#{python_path}/Frameworks/Python.framework/"
+      # args << "-Wno-c++11-narrowing" #to avoid std-c++11 narrowing errors
+
       system 'cmake', '..', *args
       system 'make'
       system 'make install'
     end
+
+
   end
 
-  def python_path
-    python = Formula.factory('python')
-    kegs = python.rack.children.reject { |p| p.basename.to_s == '.DS_Store' }
-    kegs.find { |p| Keg.new(p).linked? } || kegs.last
-  end
+#   def python_path
+#     python = Formula.factory('python')
+#     kegs = python.rack.children.reject { |p| p.basename.to_s == '.DS_Store' }
+#     kegs.find { |p| Keg.new(p).linked? } || kegs.last
+#   end
 
   def caveats
     <<-EOS.undent
@@ -78,19 +87,19 @@ class Gnuradio < Formula
 end
 
 __END__
-diff --git a/gr-qtgui/swig/CMakeLists.txt b/gr-qtgui/swig/CMakeLists.txt
-index a1f7024..53bfe18 100644
---- a/gr-qtgui/swig/CMakeLists.txt
-+++ b/gr-qtgui/swig/CMakeLists.txt
-@@ -37,6 +37,8 @@ set(GR_SWIG_DOC_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../include)
- 
- set(GR_SWIG_LIBRARIES gnuradio-qtgui)
- 
-+target_link_libraries(swig ${qtgui_libs})
-+
- GR_SWIG_MAKE(qtgui_swig qtgui_swig.i)
- 
- GR_SWIG_INSTALL(
+# diff --git a/gr-qtgui/swig/CMakeLists.txt b/gr-qtgui/swig/CMakeLists.txt
+# index a1f7024..53bfe18 100644
+# --- a/gr-qtgui/swig/CMakeLists.txt
+# +++ b/gr-qtgui/swig/CMakeLists.txt
+# @@ -37,6 +37,8 @@ set(GR_SWIG_DOC_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../include)
+#  
+#  set(GR_SWIG_LIBRARIES gnuradio-qtgui)
+#  
+# +target_link_libraries(swig ${qtgui_libs})
+# +
+#  GR_SWIG_MAKE(qtgui_swig qtgui_swig.i)
+#  
+#  GR_SWIG_INSTALL(
 
 diff --git a/cmake/Modules/FindQwt.cmake b/cmake/Modules/FindQwt.cmake
 index d3dc7a5..3c417c7 100644
