@@ -106,6 +106,11 @@ class Gnuradio < Formula
       local_blocks_path=/usr/local/share/gnuradio/grc/blocks
     EOS
   end
+  
+  def which_python
+    "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
+  end
+  
 end
 
 __END__
