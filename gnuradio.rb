@@ -24,7 +24,7 @@ class Gnuradio < Formula
   depends_on 'wxpython'
   # depends_on 'gfortran'
   # depends_on 'suite-sparse'
-  # depends_on 'cppunit'
+  depends_on 'cppunit'
   # depends_on 'libusb'
   depends_on 'ettus-uhd'
   depends_on 'pyqt' if ARGV.include?('--with-qt')
@@ -44,9 +44,9 @@ class Gnuradio < Formula
     ]
   end
   
-  def patches
-    DATA
-  end
+  #def patches
+  #  DATA
+  #end
 
   def install
     ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
@@ -123,24 +123,24 @@ __END__
 #  
 #  GR_SWIG_INSTALL(
 
-diff --git a/cmake/Modules/FindQwt.cmake b/cmake/Modules/FindQwt.cmake
-index d3dc7a5..3c417c7 100644
---- a/cmake/Modules/FindQwt.cmake
-+++ b/cmake/Modules/FindQwt.cmake
-@@ -39,7 +39,7 @@ if(QWT_INCLUDE_DIRS)
-     QWT_STRING_VERSION REGEX "QWT_VERSION_STR")
-   string(REGEX MATCH "[0-9]+.[0-9]+.[0-9]+" QWT_VERSION ${QWT_STRING_VERSION})
-   string(COMPARE LESS ${QWT_VERSION} "5.2.0" QWT_WRONG_VERSION)
--  string(COMPARE GREATER ${QWT_VERSION} "6.0.2" QWT_WRONG_VERSION)
-+  string(COMPARE GREATER ${QWT_VERSION} "6.1.2" QWT_WRONG_VERSION)
- 
-   message(STATUS "QWT Version: ${QWT_VERSION}")
-   if(NOT QWT_WRONG_VERSION)
-@@ -56,4 +56,4 @@ if(QWT_FOUND)
-   include ( FindPackageHandleStandardArgs )
-   find_package_handle_standard_args( Qwt DEFAULT_MSG QWT_LIBRARIES QWT_INCLUDE_DIRS )
-   MARK_AS_ADVANCED(QWT_LIBRARIES QWT_INCLUDE_DIRS)
--endif(QWT_FOUND)
-\ No newline at end of file
-+endif(QWT_FOUND)
+# diff --git a/cmake/Modules/FindQwt.cmake b/cmake/Modules/FindQwt.cmake
+# index d3dc7a5..3c417c7 100644
+# --- a/cmake/Modules/FindQwt.cmake
+# +++ b/cmake/Modules/FindQwt.cmake
+# @@ -39,7 +39,7 @@ if(QWT_INCLUDE_DIRS)
+#      QWT_STRING_VERSION REGEX "QWT_VERSION_STR")
+#    string(REGEX MATCH "[0-9]+.[0-9]+.[0-9]+" QWT_VERSION ${QWT_STRING_VERSION})
+#    string(COMPARE LESS ${QWT_VERSION} "5.2.0" QWT_WRONG_VERSION)
+# -  string(COMPARE GREATER ${QWT_VERSION} "6.0.2" QWT_WRONG_VERSION)
+# +  string(COMPARE GREATER ${QWT_VERSION} "6.1.2" QWT_WRONG_VERSION)
+#  
+#    message(STATUS "QWT Version: ${QWT_VERSION}")
+#    if(NOT QWT_WRONG_VERSION)
+# @@ -56,4 +56,4 @@ if(QWT_FOUND)
+#    include ( FindPackageHandleStandardArgs )
+#    find_package_handle_standard_args( Qwt DEFAULT_MSG QWT_LIBRARIES QWT_INCLUDE_DIRS )
+#    MARK_AS_ADVANCED(QWT_LIBRARIES QWT_INCLUDE_DIRS)
+# -endif(QWT_FOUND)
+# \ No newline at end of file
+# +endif(QWT_FOUND)
 
