@@ -7,31 +7,30 @@ class Gnuradio < Formula
   head 'git://gnuradio.org/gnuradio.git'
 
   depends_on 'cmake' => :build
+  depends_on 'Cheetah' => :python
+  depends_on 'lxml' => :python
+  depends_on 'numpy' => :python
+  depends_on 'scipy' => :python
+  depends_on 'matplotlib' => :python
   depends_on 'python'
   depends_on 'boost'
   depends_on 'fftw'
   depends_on 'gsl'
-  depends_on 'ice'
+  # depends_on 'ice'
   depends_on 'orc'
   depends_on 'pygtk'
   depends_on 'sdl'
   depends_on 'swig'
   depends_on 'wxpython'
-  depends_on 'hicolor-icon-theme'
   # depends_on 'gfortran'
   # depends_on 'suite-sparse'
   # depends_on 'cppunit'
   # depends_on 'libusb'
   depends_on 'ettus-uhd'
   depends_on 'pyqt' if ARGV.include?('--with-qt')
-  depends_on 'qwt' if ARGV.include?('--with-qt')
   depends_on 'pyqwt' if ARGV.include?('--with-qt')
   depends_on 'doxygen' if ARGV.include?('--with-docs')
-  depends_on 'Cheetah' => :python
-  depends_on 'lxml' => :python
-  # depends_on 'numpy' => :python
-  # depends_on 'scipy' => :python
-  # depends_on 'matplotlib' => :python
+
   
   fails_with :clang do
     build 421
@@ -54,11 +53,34 @@ class Gnuradio < Formula
     install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
     
     mkdir 'build' do
-      #args = ["-DCMAKE_PREFIX_PATH=#{prefix}", "-DQWT_INCLUDE_DIRS=#{HOMEBREW_PREFIX}/lib/qwt.framework/Headers", "-DQWT_LIBRARIES=#{HOMEBREW_PREFIX}/lib/qwt.framework/qwt", ] + std_cmake_args
-      args = std_cmake_args
+      args = ["-DCMAKE_PREFIX_PATH=#{prefix}", "-DQWT_INCLUDE_DIRS=#{HOMEBREW_PREFIX}/lib/qwt.framework/Headers", "-DQWT_LIBRARIES=#{HOMEBREW_PREFIX}/lib/qwt.framework/qwt", ] + std_cmake_args
+      #args = std_cmake_args
       args << '-DENABLE_GR_QTGUI=OFF' unless ARGV.include?('--with-qt')
       args << '-DENABLE_DOXYGEN=OFF' unless ARGV.include?('--with-docs')
-      # args << "-DPYTHON_LIBRARY=#{python_path}/Frameworks/Python.framework/"
+      
+      # From opencv.rb
+      python_prefix = `python-config --prefix`.strip
+      # Python is actually a library. The libpythonX.Y.dylib points to this lib, too.
+      if File.exist? "#{python_prefix}/Python"
+        # Python was compiled with --framework:
+        args << "-DPYTHON_LIBRARY='#{python_prefix}/Python'"
+        if !MacOS::CLT.installed? and python_prefix.start_with? '/System/Library'
+          # For Xcode-only systems, the headers of system's python are inside of Xcode
+          args << "-DPYTHON_INCLUDE_DIR='#{MacOS.sdk_path}/System/Library/Frameworks/Python.framework/Versions/2.7/Headers'"
+        else
+          args << "-DPYTHON_INCLUDE_DIR='#{python_prefix}/Headers'"
+        end
+      else
+        python_lib = "#{python_prefix}/lib/lib#{which_python}"
+        if File.exists? "#{python_lib}.a"
+          args << "-DPYTHON_LIBRARY='#{python_lib}.a'"
+        else
+          args << "-DPYTHON_LIBRARY='#{python_lib}.dylib'"
+        end
+        args << "-DPYTHON_INCLUDE_DIR='#{python_prefix}/include/#{which_python}'"
+      end
+      args << "-DPYTHON_PACKAGES_PATH='#{lib}/#{which_python}/site-packages'"
+      
       # args << "-Wno-c++11-narrowing" #to avoid std-c++11 narrowing errors
 
       system 'cmake', '..', *args
@@ -69,11 +91,11 @@ class Gnuradio < Formula
 
   end
 
-#   def python_path
-#     python = Formula.factory('python')
-#     kegs = python.rack.children.reject { |p| p.basename.to_s == '.DS_Store' }
-#     kegs.find { |p| Keg.new(p).linked? } || kegs.last
-#   end
+  def python_path
+    python = Formula.factory('python')
+    kegs = python.rack.children.reject { |p| p.basename.to_s == '.DS_Store' }
+    kegs.find { |p| Keg.new(p).linked? } || kegs.last
+  end
 
   def caveats
     <<-EOS.undent
